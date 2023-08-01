@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "80617843745",
+    "project_id": "gofilter-318e9",
+    "storage_bucket": "gofilter-318e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80617843745:android:484f8b65726186bb210760",
+        "android_client_info": {
+          "package_name": "com.example.gofilter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80617843745-l6e3pd9tca7v6j0g6i7nc6e85kfdbroh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Wsbi40TJ84ZjueozkZD5mIBSVP8TdU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80617843745-l6e3pd9tca7v6j0g6i7nc6e85kfdbroh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
