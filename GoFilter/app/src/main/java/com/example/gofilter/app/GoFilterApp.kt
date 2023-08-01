@@ -62,23 +62,30 @@ import com.example.gofilter.screens.SignUpScreen
 
 @Composable
 fun GoFilterApp() {
+    val navController = rememberNavController()
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
         NavBar()
+
+//        Crossfade(targetState = GoFilterRouter.currentScreen, label = "",) { currentState ->
+//            when(currentState.value) {
+//                is Screen.SignInScreen -> {
+//                    SignInScreen()
+//                }
+//                is Screen.SignUpScreen -> {
+//                    SignUpScreen()
+//                }
+//            }
+//        }
     }
 }
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun NavBarNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
-        composable("signin") {
-            SignInScreen()
-        }
-        composable("signup") {
-            SignUpScreen()
-        }
         composable("home") {
             HomeScreen()
         }
@@ -139,7 +146,7 @@ fun NavBar() {
             )
         }
     ) {
-        Navigation(navController = navController)
+        NavBarNavigation(navController = navController)
     }
 }
 

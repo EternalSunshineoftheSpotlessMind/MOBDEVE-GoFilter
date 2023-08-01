@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,11 +31,11 @@ import com.example.gofilter.components.MyPasswordField
 import com.example.gofilter.components.MyTextField
 import com.example.gofilter.components.SmallTextComponent
 import com.example.gofilter.components.krubFamily
+import com.example.gofilter.navigation.GoFilterRouter
+import com.example.gofilter.navigation.Screen
 
 @Composable
 fun SignInScreen() {
-    val navController = rememberNavController()
-
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -71,18 +72,17 @@ fun SignInScreen() {
                     ),
                     textAlign = TextAlign.Center
                 )
-                Text(
+                ClickableText(
                     modifier = Modifier
-                        .padding(5.dp)
-                        .clickable { navController.navigate("signup") },
-                    text = "SIGN UP",
+                        .padding(5.dp),
+                    text = AnnotatedString("SIGN UP"),
+                    onClick = { GoFilterRouter.navigateTo(Screen.SignUpScreen) },
                     style = TextStyle(
                         fontSize = 15.sp,
                         fontFamily = krubFamily,
                         fontWeight = FontWeight.Normal,
                         color = colorResource(id = R.color.purple)
-                    ),
-                    textAlign = TextAlign.Center
+                    )
                 )
             }
 
