@@ -151,7 +151,8 @@ fun ButtonComponent(value: String) {
         onClick = { },
         modifier = Modifier
             .width(250.dp)
-            .heightIn(48.dp),
+            .heightIn(48.dp)
+            .padding(8.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(colorResource(id = R.color.purple))
     ) {
