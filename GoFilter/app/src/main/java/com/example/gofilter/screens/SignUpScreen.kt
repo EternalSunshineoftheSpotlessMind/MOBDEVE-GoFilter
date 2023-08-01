@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gofilter.R
 import com.example.gofilter.components.BigTextComponent
 import com.example.gofilter.components.ButtonComponent
@@ -29,12 +30,14 @@ import com.example.gofilter.components.MyPasswordField
 import com.example.gofilter.components.MyTextField
 import com.example.gofilter.components.SmallTextComponent
 import com.example.gofilter.components.krubFamily
+import com.example.gofilter.data.SignInViewModel
+import com.example.gofilter.data.UIEvent
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
 import com.example.gofilter.navigation.SystemBackButtonHandler
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
 
     Surface(
         modifier = Modifier
@@ -52,9 +55,15 @@ fun SignUpScreen() {
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            MyTextField(labelValue = "USERNAME")
-            MyTextField(labelValue = "EMAIL")
-            MyPasswordField(labelValue = "PASSWORD")
+            MyTextField(labelValue = "USERNAME", onTextSelected = {
+                signInViewModel.onEvent(UIEvent.UsernameChanged(it))
+            })
+            MyTextField(labelValue = "EMAIL", onTextSelected = {
+                signInViewModel.onEvent(UIEvent.EmailChanged(it))
+            })
+            MyPasswordField(labelValue = "PASSWORD", onTextSelected = {
+                signInViewModel.onEvent(UIEvent.PasswordChanged(it))
+            })
 
             Row(
                 modifier = Modifier
@@ -89,7 +98,13 @@ fun SignUpScreen() {
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            ButtonComponent(value = "Create Account")
+            ButtonComponent(
+                value = "Create Account",
+                onButtonClicked = {
+                    signInViewModel.onEvent(UIEvent.SignUpButtonClicked)
+                },
+                isEnabled = true
+            )
         }
     }
     SystemBackButtonHandler {
