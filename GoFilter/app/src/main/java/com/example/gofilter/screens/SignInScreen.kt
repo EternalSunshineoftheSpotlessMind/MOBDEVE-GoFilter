@@ -2,13 +2,20 @@ package com.example.gofilter.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,9 +37,11 @@ import com.example.gofilter.components.ButtonComponent
 import com.example.gofilter.components.MyPasswordField
 import com.example.gofilter.components.MyTextField
 import com.example.gofilter.components.SmallTextComponent
+import com.example.gofilter.components.koulenFamily
 import com.example.gofilter.components.krubFamily
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
+import com.example.gofilter.navigation.SystemBackButtonHandler
 
 @Composable
 fun SignInScreen() {
@@ -88,10 +97,33 @@ fun SignInScreen() {
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            ButtonComponent(value = "Sign In")
-
+            Button(
+                onClick = { GoFilterRouter.navigateTo(Screen.NavigationScreen) },
+                modifier = Modifier
+                    .width(250.dp)
+                    .heightIn(48.dp)
+                    .padding(8.dp),
+                contentPadding = PaddingValues(),
+                shape = RoundedCornerShape(50.dp),
+                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.purple))
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(48.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "SIGN IN",
+                        fontSize = 23.sp,
+                        fontFamily = koulenFamily
+                    )
+                }
+            }
         }
-
+        SystemBackButtonHandler {
+            GoFilterRouter.navigateTo(Screen.SignUpScreen)
+        }
     }
 }
 

@@ -57,29 +57,29 @@ import com.example.gofilter.MainViewModel
 import com.example.gofilter.R
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
+import com.example.gofilter.navigation.SystemBackButtonHandler
 import com.example.gofilter.screens.SignInScreen
 import com.example.gofilter.screens.SignUpScreen
 
 @Composable
 fun GoFilterApp() {
-    val navController = rememberNavController()
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
-        NavBar()
-
-//        Crossfade(targetState = GoFilterRouter.currentScreen, label = "",) { currentState ->
-//            when(currentState.value) {
-//                is Screen.SignInScreen -> {
-//                    SignInScreen()
-//                }
-//                is Screen.SignUpScreen -> {
-//                    SignUpScreen()
-//                }
-//            }
-//        }
+        Crossfade(targetState = GoFilterRouter.currentScreen, label = "",) { currentState ->
+            when(currentState.value) {
+                is Screen.SignInScreen -> {
+                    SignInScreen()
+                }
+                is Screen.SignUpScreen -> {
+                    SignUpScreen()
+                }
+                is Screen.NavigationScreen -> {
+                    NavBar()
+                }
+            }
+        }
     }
 }
 
@@ -147,6 +147,9 @@ fun NavBar() {
         }
     ) {
         NavBarNavigation(navController = navController)
+    }
+    SystemBackButtonHandler {
+        GoFilterRouter.navigateTo(Screen.SignInScreen)
     }
 }
 
