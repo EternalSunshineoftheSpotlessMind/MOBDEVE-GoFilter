@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-//
+//ViewModel for Search tab
 class MainViewModel: ViewModel() {
 
     private val _searchText = MutableStateFlow("")
@@ -46,6 +46,7 @@ class MainViewModel: ViewModel() {
     }
 }
 
+//Data class for searching "profiles"
 data class Profile(
     val firstName: String,
     val lastName: String
@@ -63,6 +64,7 @@ data class Profile(
     }
 }
 
+//Hard coded search list
 private val allProfiles = listOf(
     Profile(
         firstName = "John",

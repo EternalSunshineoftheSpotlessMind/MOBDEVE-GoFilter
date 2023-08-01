@@ -36,6 +36,7 @@ import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
 import com.example.gofilter.navigation.SystemBackButtonHandler
 
+//Sign Up Screen
 @Composable
 fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
 
@@ -112,6 +113,7 @@ fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
     }
 }
 
+//Preview for Sign Up Screen
 @Preview (showBackground = true)
 @Composable
 fun SignUpPreview() {

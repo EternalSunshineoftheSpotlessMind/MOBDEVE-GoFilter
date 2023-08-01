@@ -39,6 +39,7 @@ import com.example.gofilter.components.MyTextField
 import com.example.gofilter.components.SmallTextComponent
 import com.example.gofilter.components.koulenFamily
 import com.example.gofilter.components.krubFamily
+import com.example.gofilter.data.UIEvent
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
 import com.example.gofilter.navigation.SystemBackButtonHandler
