@@ -92,7 +92,7 @@ fun SmallTextComponent(value: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTextField(labelValue: String) {
+fun MyTextField(labelValue: String, onTextSelected: (String) -> Unit) {
     val textValue = remember { mutableStateOf("") }
 
     OutlinedTextField(
@@ -106,6 +106,7 @@ fun MyTextField(labelValue: String) {
         value = textValue.value,
         onValueChange = {
             textValue.value = it
+            onTextSelected(it)
         },
         singleLine = true,
         maxLines = 1
@@ -114,7 +115,7 @@ fun MyTextField(labelValue: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyPasswordField(labelValue: String) {
+fun MyPasswordField(labelValue: String, onTextSelected: (String) -> Unit) {
     val password = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
     val passwordVisible = remember { mutableStateOf(false) }
@@ -135,6 +136,7 @@ fun MyPasswordField(labelValue: String) {
         value = password.value,
         onValueChange = {
             password.value = it
+            onTextSelected(it)
         },
         trailingIcon = {
             val iconImage = if (passwordVisible.value) {
@@ -158,16 +160,19 @@ fun MyPasswordField(labelValue: String) {
 }
 
 @Composable
-fun ButtonComponent(value: String) {
+fun ButtonComponent(value: String, onButtonClicked : () -> Unit, isEnabled : Boolean = false) {
     Button(
-        onClick = { GoFilterRouter.navigateTo(Screen.SignUpScreen) },
+        onClick = {
+                  onButtonClicked.invoke()
+                  },
         modifier = Modifier
             .width(250.dp)
             .heightIn(48.dp)
             .padding(8.dp),
         contentPadding = PaddingValues(),
         shape = RoundedCornerShape(50.dp),
-        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.purple))
+        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.purple)),
+        enabled = isEnabled
     ) {
         Box(
             modifier = Modifier

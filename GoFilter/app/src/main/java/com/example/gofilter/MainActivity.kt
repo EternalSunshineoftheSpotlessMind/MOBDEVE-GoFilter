@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//Preview for MainActivity
 @Preview
 @Composable
 fun DefaultPreview() {

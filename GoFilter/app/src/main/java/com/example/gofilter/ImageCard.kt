@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import kotlin.random.Random
 
+//Component for Home screen / Feed
 @Composable
 fun ImageCard(
     title: String,
@@ -31,6 +32,7 @@ fun ImageCard(
         ),
         shape = MaterialTheme.shapes.large
     ) {
+        //Retrieves photos randomly from picsum
         Image(
             painter = rememberAsyncImagePainter(
                 model = "https://picsum.photos/seed/${Random.nextInt()}/300/200"
