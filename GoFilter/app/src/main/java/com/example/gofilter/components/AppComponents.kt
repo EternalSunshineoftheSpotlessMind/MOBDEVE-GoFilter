@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -44,6 +47,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gofilter.R
+import com.example.gofilter.navigation.GoFilterRouter
+import com.example.gofilter.navigation.Screen
 
 val krubFamily = FontFamily(
     Font(R.font.krub_regular, FontWeight.Normal),
@@ -97,11 +102,13 @@ fun MyTextField(labelValue: String) {
             focusedLabelColor = colorResource(id = R.color.gray),
             cursorColor = colorResource(id = R.color.gray),
         ),
-        keyboardOptions = KeyboardOptions.Default,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         value = textValue.value,
         onValueChange = {
             textValue.value = it
-        }
+        },
+        singleLine = true,
+        maxLines = 1
     )
 }
 
@@ -109,7 +116,7 @@ fun MyTextField(labelValue: String) {
 @Composable
 fun MyPasswordField(labelValue: String) {
     val password = remember { mutableStateOf("") }
-
+    val localFocusManager = LocalFocusManager.current
     val passwordVisible = remember { mutableStateOf(false) }
 
     OutlinedTextField(
@@ -119,7 +126,12 @@ fun MyPasswordField(labelValue: String) {
             focusedLabelColor = colorResource(id = R.color.gray),
             cursorColor = colorResource(id = R.color.gray),
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+        singleLine = true,
+        maxLines = 1,
+        keyboardActions = KeyboardActions {
+            localFocusManager.clearFocus()
+        },
         value = password.value,
         onValueChange = {
             password.value = it
@@ -148,12 +160,13 @@ fun MyPasswordField(labelValue: String) {
 @Composable
 fun ButtonComponent(value: String) {
     Button(
-        onClick = { },
+        onClick = { GoFilterRouter.navigateTo(Screen.SignUpScreen) },
         modifier = Modifier
             .width(250.dp)
             .heightIn(48.dp)
             .padding(8.dp),
         contentPadding = PaddingValues(),
+        shape = RoundedCornerShape(50.dp),
         colors = ButtonDefaults.buttonColors(colorResource(id = R.color.purple))
     ) {
         Box(

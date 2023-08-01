@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 sealed class Screen() {
     object SignInScreen : Screen()
     object SignUpScreen : Screen()
+    object NavigationScreen : Screen()
 }
 
 object GoFilterRouter {

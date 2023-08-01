@@ -92,7 +92,6 @@ fun SignUpScreen() {
             ButtonComponent(value = "Create Account")
         }
     }
-
     SystemBackButtonHandler {
         GoFilterRouter.navigateTo(Screen.SignInScreen)
     }
