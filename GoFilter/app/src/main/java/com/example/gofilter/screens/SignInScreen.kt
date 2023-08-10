@@ -1,6 +1,5 @@
 package com.example.gofilter.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gofilter.R
 import com.example.gofilter.components.BigTextComponent
 import com.example.gofilter.components.ButtonComponent
@@ -39,13 +38,15 @@ import com.example.gofilter.components.MyTextField
 import com.example.gofilter.components.SmallTextComponent
 import com.example.gofilter.components.koulenFamily
 import com.example.gofilter.components.krubFamily
-import com.example.gofilter.data.UIEvent
+import com.example.gofilter.data.SignInUIEvent
+import com.example.gofilter.data.SignInViewModel
+import com.example.gofilter.data.SignUpUIEvent
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
 import com.example.gofilter.navigation.SystemBackButtonHandler
 
 @Composable
-fun SignInScreen() {
+fun SignInScreen(signInViewModel: SignInViewModel = viewModel()) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -64,11 +65,13 @@ fun SignInScreen() {
 
             MyTextField(
                 labelValue = "EMAIL",
-                onTextSelected = {}
+                onTextSelected = { signInViewModel.onEvent(SignInUIEvent.EmailChanged(it)) },
+                errorStatus = signInViewModel.signInUIState.value.emailError
             )
             MyPasswordField(
                 labelValue = "PASSWORD",
-                onTextSelected = {}
+                onTextSelected = { signInViewModel.onEvent(SignInUIEvent.PasswordChanged(it)) },
+                errorStatus = signInViewModel.signInUIState.value.passwordError
             )
 
             Row(
@@ -104,29 +107,13 @@ fun SignInScreen() {
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            Button(
-                onClick = { GoFilterRouter.navigateTo(Screen.NavigationScreen) },
-                modifier = Modifier
-                    .width(250.dp)
-                    .heightIn(48.dp)
-                    .padding(8.dp),
-                contentPadding = PaddingValues(),
-                shape = RoundedCornerShape(50.dp),
-                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.purple))
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(48.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "SIGN IN",
-                        fontSize = 23.sp,
-                        fontFamily = koulenFamily
-                    )
-                }
-            }
+            ButtonComponent(
+                value = "Sign In",
+                onButtonClicked = {
+                    signInViewModel.onEvent(SignInUIEvent.SignInButtonClicked)
+                },
+                isEnabled = signInViewModel.allValidationsPassed.value
+            )
         }
         SystemBackButtonHandler {
             GoFilterRouter.navigateTo(Screen.SignUpScreen)

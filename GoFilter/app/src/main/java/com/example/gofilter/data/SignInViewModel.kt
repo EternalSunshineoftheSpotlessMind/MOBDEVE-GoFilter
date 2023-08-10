@@ -4,95 +4,70 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.gofilter.data.rules.Validator
+import com.example.gofilter.navigation.GoFilterRouter
+import com.example.gofilter.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
 
 class SignInViewModel : ViewModel() {
     private val TAG = SignInViewModel::class.simpleName
-    var signUpUIState = mutableStateOf(SignUpUIState())
+    var signInUIState = mutableStateOf(SignInUIState())
     var allValidationsPassed = mutableStateOf(false)
 
-    fun onEvent(event:UIEvent){
-        validateDataWithRules()
+    fun onEvent(event: SignInUIEvent) {
         when(event){
-            is UIEvent.UsernameChanged -> {
-                signUpUIState.value = signUpUIState.value.copy(
-                    username = event.username
-                )
-                printState()
-            }
-            is UIEvent.EmailChanged -> {
-                signUpUIState.value = signUpUIState.value.copy(
+            is SignInUIEvent.EmailChanged -> {
+                signInUIState.value = signInUIState.value.copy(
                     email = event.email
                 )
-                printState()
             }
-            is UIEvent.PasswordChanged -> {
-                signUpUIState.value = signUpUIState.value.copy(
+            is SignInUIEvent.PasswordChanged -> {
+                signInUIState.value = signInUIState.value.copy(
                     password = event.password
                 )
-                printState()
             }
-            is UIEvent.SignUpButtonClicked -> {
-                signUp()
+            is SignInUIEvent.SignInButtonClicked -> {
+                signin()
             }
         }
+
+        validateSignInUIDataWithRules()
     }
 
-    private fun signUp () {
-        Log.d(TAG, "Inside_signUp")
-        printState()
-
-        createUser(
-            username = signUpUIState.value.username,
-            email = signUpUIState.value.email,
-            password = signUpUIState.value.password
-        )
-    }
-
-    private fun validateDataWithRules() {
-        val usernameResult = Validator.validateUsername(
-            username = signUpUIState.value.username
-        )
+    private fun validateSignInUIDataWithRules() {
         val emailResult = Validator.validateEmail(
-            email = signUpUIState.value.email
+            email = signInUIState.value.email
         )
         val passwordResult = Validator.validatePassword(
-            password = signUpUIState.value.password
+            password = signInUIState.value.password
         )
 
-        Log.d(TAG, "Inside_validateDataWithRules")
-        Log.d(TAG, "username = $usernameResult")
-        Log.d(TAG, "email = $emailResult")
-        Log.d(TAG, "password = $passwordResult")
-
-        signUpUIState.value = signUpUIState.value.copy(
-            usernameError = usernameResult.status,
+        signInUIState.value = signInUIState.value.copy(
             emailError = emailResult.status,
             passwordError = passwordResult.status
         )
 
-        //Enables button if all fields have valid data
-        allValidationsPassed.value = usernameResult.status && emailResult.status && passwordResult.status
+        allValidationsPassed.value = emailResult.status && passwordResult.status
     }
 
-    private fun printState() {
-        Log.d(TAG, "Inside_printState")
-        Log.d(TAG, signUpUIState.value.toString())
-    }
+    //Sign in existing user in Firebase
+    private fun signin() {
+        val email = signInUIState.value.email
+        val password = signInUIState.value.password
 
-    fun createUser(username: String, email: String, password: String) {
         FirebaseAuth
             .getInstance()
-            .createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener{
-                Log.d(TAG, "Inside_OnCompleteListener")
-                Log.d(TAG, " isSuccessful = ${it.isSuccessful}")
+            .signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                Log.d(TAG, "Inside_signin_success")
+                Log.d(TAG, "${it.isSuccessful}")
+
+                if(it.isSuccessful){
+                    GoFilterRouter.navigateTo(Screen.NavigationScreen)
+                }
             }
             .addOnFailureListener {
-                Log.d(TAG, "InsideOnFailureListener")
-                Log.d(TAG, "Exception= ${it.message}")
-                Log.d(TAG, "Exception= ${it.localizedMessage}")
+                Log.d(TAG, "Inside_signin_failure")
+                Log.d(TAG, "${it.localizedMessage}")
             }
     }
 }
-

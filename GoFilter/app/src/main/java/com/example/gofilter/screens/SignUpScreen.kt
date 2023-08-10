@@ -30,15 +30,15 @@ import com.example.gofilter.components.MyPasswordField
 import com.example.gofilter.components.MyTextField
 import com.example.gofilter.components.SmallTextComponent
 import com.example.gofilter.components.krubFamily
-import com.example.gofilter.data.SignInViewModel
-import com.example.gofilter.data.UIEvent
+import com.example.gofilter.data.SignUpViewModel
+import com.example.gofilter.data.SignUpUIEvent
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
 import com.example.gofilter.navigation.SystemBackButtonHandler
 
 //Sign Up Screen
 @Composable
-fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
+fun SignUpScreen(signUpViewModel: SignUpViewModel = viewModel()) {
 
     Surface(
         modifier = Modifier
@@ -58,18 +58,18 @@ fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
 
             MyTextField(
                 labelValue = "USERNAME",
-                onTextSelected = { signInViewModel.onEvent(UIEvent.UsernameChanged(it)) },
-                errorStatus = signInViewModel.signUpUIState.value.usernameError
+                onTextSelected = { signUpViewModel.onEvent(SignUpUIEvent.UsernameChanged(it)) },
+                errorStatus = signUpViewModel.signUpUIState.value.usernameError
             )
             MyTextField(
                 labelValue = "EMAIL",
-                onTextSelected = { signInViewModel.onEvent(UIEvent.EmailChanged(it)) },
-                errorStatus = signInViewModel.signUpUIState.value.emailError
+                onTextSelected = { signUpViewModel.onEvent(SignUpUIEvent.EmailChanged(it)) },
+                errorStatus = signUpViewModel.signUpUIState.value.emailError
             )
             MyPasswordField(
                 labelValue = "PASSWORD",
-                onTextSelected = { signInViewModel.onEvent(UIEvent.PasswordChanged(it)) },
-                errorStatus = signInViewModel.signUpUIState.value.passwordError
+                onTextSelected = { signUpViewModel.onEvent(SignUpUIEvent.PasswordChanged(it)) },
+                errorStatus = signUpViewModel.signUpUIState.value.passwordError
             )
 
             Row(
@@ -108,9 +108,9 @@ fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
             ButtonComponent(
                 value = "Create Account",
                 onButtonClicked = {
-                    signInViewModel.onEvent(UIEvent.SignUpButtonClicked)
+                    signUpViewModel.onEvent(SignUpUIEvent.SignUpButtonClicked)
                 },
-                isEnabled = signInViewModel.allValidationsPassed.value
+                isEnabled = signUpViewModel.allValidationsPassed.value
             )
         }
     }
