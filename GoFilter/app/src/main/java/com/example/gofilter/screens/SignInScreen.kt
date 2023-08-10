@@ -62,8 +62,14 @@ fun SignInScreen() {
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-//            MyTextField(labelValue = "EMAIL")
-//            MyPasswordField(labelValue = "PASSWORD")
+            MyTextField(
+                labelValue = "EMAIL",
+                onTextSelected = {}
+            )
+            MyPasswordField(
+                labelValue = "PASSWORD",
+                onTextSelected = {}
+            )
 
             Row(
                 modifier = Modifier

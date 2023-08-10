@@ -56,15 +56,21 @@ fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            MyTextField(labelValue = "USERNAME", onTextSelected = {
-                signInViewModel.onEvent(UIEvent.UsernameChanged(it))
-            })
-            MyTextField(labelValue = "EMAIL", onTextSelected = {
-                signInViewModel.onEvent(UIEvent.EmailChanged(it))
-            })
-            MyPasswordField(labelValue = "PASSWORD", onTextSelected = {
-                signInViewModel.onEvent(UIEvent.PasswordChanged(it))
-            })
+            MyTextField(
+                labelValue = "USERNAME",
+                onTextSelected = { signInViewModel.onEvent(UIEvent.UsernameChanged(it)) },
+                errorStatus = signInViewModel.signUpUIState.value.usernameError
+            )
+            MyTextField(
+                labelValue = "EMAIL",
+                onTextSelected = { signInViewModel.onEvent(UIEvent.EmailChanged(it)) },
+                errorStatus = signInViewModel.signUpUIState.value.emailError
+            )
+            MyPasswordField(
+                labelValue = "PASSWORD",
+                onTextSelected = { signInViewModel.onEvent(UIEvent.PasswordChanged(it)) },
+                errorStatus = signInViewModel.signUpUIState.value.passwordError
+            )
 
             Row(
                 modifier = Modifier

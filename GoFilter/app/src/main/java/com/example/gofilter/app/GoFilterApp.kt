@@ -83,6 +83,7 @@ fun GoFilterApp() {
     }
 }
 
+//Navigation Controller for the NavBar
 @Composable
 fun NavBarNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
@@ -104,6 +105,8 @@ fun NavBarNavigation(navController: NavHostController) {
     }
 }
 
+//Composable for positioning the Navbar and setting the icons. Adds the NavBarNavigation Composable
+//to make navigation function
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,6 +156,7 @@ fun NavBar() {
     }
 }
 
+//Composable for the NavBar seen at the bottom of the screen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavigationBar(
@@ -206,6 +210,7 @@ fun BottomNavigationBar(
     }
 }
 
+//Screen for the Home Screen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
@@ -261,6 +266,7 @@ fun HomeScreen() {
     }
 }
 
+//Screen for the Search Screen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen() {
@@ -308,6 +314,7 @@ fun SearchScreen() {
     }
 }
 
+//Screen for the New Screen. This is where photos can be taken/uploaded, edited, and posted.
 @Composable
 fun NewScreen() {
     Box(
@@ -318,6 +325,7 @@ fun NewScreen() {
     }
 }
 
+//Screen for the Chat Screen
 @Composable
 fun ChatScreen() {
     Box(
@@ -328,6 +336,7 @@ fun ChatScreen() {
     }
 }
 
+//Screen for the Profile Screen
 @Composable
 fun ProfileScreen() {
     Box(

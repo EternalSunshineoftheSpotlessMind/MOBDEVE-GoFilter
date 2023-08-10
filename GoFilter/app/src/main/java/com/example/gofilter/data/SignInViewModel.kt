@@ -11,6 +11,7 @@ class SignInViewModel : ViewModel() {
     var allValidationsPassed = mutableStateOf(false)
 
     fun onEvent(event:UIEvent){
+        validateDataWithRules()
         when(event){
             is UIEvent.UsernameChanged -> {
                 signUpUIState.value = signUpUIState.value.copy(

@@ -3,7 +3,7 @@ package com.example.gofilter.data.rules
 object Validator {
     fun validateUsername(username:String) :ValidationResult{
         return ValidationResult(
-            (!username.isNullOrEmpty() && username.length>=6)
+            (!username.isNullOrEmpty())
         )
     }
     fun validateEmail(email:String) :ValidationResult{

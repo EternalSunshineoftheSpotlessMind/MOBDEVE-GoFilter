@@ -92,7 +92,7 @@ fun SmallTextComponent(value: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTextField(labelValue: String, onTextSelected: (String) -> Unit) {
+fun MyTextField(labelValue: String, onTextSelected: (String) -> Unit, errorStatus: Boolean = false) {
     val textValue = remember { mutableStateOf("") }
 
     OutlinedTextField(
@@ -115,7 +115,7 @@ fun MyTextField(labelValue: String, onTextSelected: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyPasswordField(labelValue: String, onTextSelected: (String) -> Unit) {
+fun MyPasswordField(labelValue: String, onTextSelected: (String) -> Unit, errorStatus: Boolean = false) {
     val password = remember { mutableStateOf("") }
     val localFocusManager = LocalFocusManager.current
     val passwordVisible = remember { mutableStateOf(false) }
@@ -155,7 +155,8 @@ fun MyPasswordField(labelValue: String, onTextSelected: (String) -> Unit) {
                 Icon(imageVector = iconImage, contentDescription = description)
             }
         },
-        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = !errorStatus
     )
 }
 
