@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.gofilter.data.rules.Validator
+import com.google.firebase.auth.FirebaseAuth
 
 class SignInViewModel : ViewModel() {
     private val TAG = SignInViewModel::class.simpleName
@@ -41,7 +42,11 @@ class SignInViewModel : ViewModel() {
         Log.d(TAG, "Inside_signUp")
         printState()
 
-        validateDataWithRules()
+        createUser(
+            username = signUpUIState.value.username,
+            email = signUpUIState.value.email,
+            password = signUpUIState.value.password
+        )
     }
 
     private fun validateDataWithRules() {
@@ -65,11 +70,29 @@ class SignInViewModel : ViewModel() {
             emailError = emailResult.status,
             passwordError = passwordResult.status
         )
+
+        //Enables button if all fields have valid data
+        allValidationsPassed.value = usernameResult.status && emailResult.status && passwordResult.status
     }
 
     private fun printState() {
         Log.d(TAG, "Inside_printState")
         Log.d(TAG, signUpUIState.value.toString())
+    }
+
+    fun createUser(username: String, email: String, password: String) {
+        FirebaseAuth
+            .getInstance()
+            .createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener{
+                Log.d(TAG, "Inside_OnCompleteListener")
+                Log.d(TAG, " isSuccessful = ${it.isSuccessful}")
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "InsideOnFailureListener")
+                Log.d(TAG, "Exception= ${it.message}")
+                Log.d(TAG, "Exception= ${it.localizedMessage}")
+            }
     }
 }
 

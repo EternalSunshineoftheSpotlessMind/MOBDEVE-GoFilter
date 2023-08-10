@@ -110,7 +110,7 @@ fun SignUpScreen(signInViewModel: SignInViewModel = viewModel()) {
                 onButtonClicked = {
                     signInViewModel.onEvent(UIEvent.SignUpButtonClicked)
                 },
-                isEnabled = true
+                isEnabled = signInViewModel.allValidationsPassed.value
             )
         }
     }
