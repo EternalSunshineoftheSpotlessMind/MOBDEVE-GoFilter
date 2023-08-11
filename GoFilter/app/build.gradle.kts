@@ -60,10 +60,17 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material:material-icons-extended:1.5.0")
     implementation("androidx.navigation:navigation-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+
+    //Coil (Display images using URIs)
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    //CameraX
+    implementation("androidx.camera:camera-camera2:1.2.3")
+    implementation("androidx.camera:camera-lifecycle:1.2.3")
+    implementation("androidx.camera:camera-view:1.2.3")
 
     //Firebase
     implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
@@ -72,6 +79,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
     implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

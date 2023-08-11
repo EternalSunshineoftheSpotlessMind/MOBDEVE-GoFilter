@@ -21,8 +21,8 @@ import kotlin.random.Random
 //Component for Home screen / Feed
 @Composable
 fun ImageCard(
-    title: String,
-    description: String,
+    user: String,
+    caption: String,
     modifier: Modifier
 ) {
     Card(
@@ -35,7 +35,7 @@ fun ImageCard(
         //Retrieves photos randomly from picsum
         Image(
             painter = rememberAsyncImagePainter(
-                model = "https://picsum.photos/seed/${Random.nextInt()}/300/200"
+                model = "https://firebasestorage.googleapis.com/v0/b/gofilter-318e9.appspot.com/o/images%2F-1785654853.jpg?alt=media&token=b61ab996-96ce-4f2c-963d-e2f00332f7a6"
             ),
             contentDescription = null,
             modifier = Modifier
@@ -48,12 +48,12 @@ fun ImageCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = title,
+                text = user,
                 style = MaterialTheme.typography.titleLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = description,
+                text = caption,
                 style = MaterialTheme.typography.bodyMedium
             )
         }

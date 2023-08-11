@@ -1,9 +1,16 @@
 package com.example.gofilter.app
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +26,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,9 +42,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +56,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -51,16 +65,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.gofilter.BottomNavItem
 import com.example.gofilter.ImageCard
 import com.example.gofilter.MainViewModel
 import com.example.gofilter.R
+import com.example.gofilter.components.ButtonComponent
+import com.example.gofilter.components.MyTextField
+import com.example.gofilter.data.Post
+import com.example.gofilter.data.PostViewModel
 import com.example.gofilter.navigation.GoFilterRouter
 import com.example.gofilter.navigation.Screen
 import com.example.gofilter.navigation.SystemBackButtonHandler
 import com.example.gofilter.screens.SignInScreen
 import com.example.gofilter.screens.SignUpScreen
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlin.random.Random
 
+private lateinit var database: DatabaseReference
 @Composable
 fun GoFilterApp() {
     Surface(
@@ -254,10 +280,10 @@ fun HomeScreen() {
             }
         ) { values ->
             LazyColumn(contentPadding = values) {
-                items(20) {
+                items(4) {
                     ImageCard(
-                        title = "Bacon",
-                        description = "Honey bum sugar plum",
+                        user = "todo",
+                        caption = "boogie woogie",
                         modifier = Modifier.padding(16.dp)
                     )
                 }
@@ -317,12 +343,64 @@ fun SearchScreen() {
 //Screen for the New Screen. This is where photos can be taken/uploaded, edited, and posted.
 @Composable
 fun NewScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    //Image picker
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImageUri = uri }
+    )
+
+    //Firebase References
+    val cStorage = FirebaseStorage.getInstance()
+    val cStorageReference = cStorage.getReference()
+    val cReference = cStorageReference.child("images/${Random.nextInt()}.jpg")
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "New Screen")
+        item {
+            AsyncImage(
+                model = selectedImageUri,
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.Crop
+            )
+        }
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ButtonComponent(
+                    value = "Select Photo",
+                    onButtonClicked = {
+                        photoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    isEnabled = true
+                )
+                ButtonComponent(
+                    value = "Post Photo",
+                    onButtonClicked = {
+                        //Upload photo into Storage
+                        selectedImageUri?.let { cReference.putFile(it) }
+                        //Write into Realtime Database
+                        writeNewPost("mikareyes", "best friend", selectedImageUri.toString())
+                    },
+                    isEnabled = true
+                )
+            }
+        }
     }
+}
+
+//Write data into the Realtime Database
+fun writeNewPost(user: String, caption: String, image: String) {
+    database = Firebase.database.reference
+    val post = Post(user, caption, image)
+
+    database.child("posts").child(user).setValue(post)
 }
 
 //Screen for the Chat Screen
